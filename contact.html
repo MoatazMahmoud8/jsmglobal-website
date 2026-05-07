@@ -10,6 +10,7 @@
   <title>Contact Us | JSM Global</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/index.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -243,6 +244,11 @@
       transform: translateY(0);
     }
 
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .form-message {
       padding: 14px 16px;
       border-radius: 10px;
@@ -470,15 +476,15 @@
       
       <div class="form-message" id="formMessage"></div>
 
-      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form id="contactForm">
         <div class="form-group">
           <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
+          <input type="text" id="name" name="from_name" placeholder="Your name" required>
         </div>
 
         <div class="form-group">
           <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          <input type="email" id="email" name="from_email" placeholder="your@email.com" required>
         </div>
 
         <div class="form-group">
@@ -617,6 +623,9 @@
 </footer>
 
 <script>
+  // Initialize EmailJS
+  emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS Public Key
+
   // FAQ Accordion functionality
   document.querySelectorAll('.faq-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -624,10 +633,52 @@
     });
   });
 
-  // Form handling with Formspree
+  // Form handling with EmailJS
   document.getElementById('contactForm').addEventListener('submit', async (e) => {
-    // Formspree will handle email sending automatically
-    // No need to prevent default - let the form submit normally to Formspree
+    e.preventDefault();
+    
+    const formMessage = document.getElementById('formMessage');
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalBtnText = submitBtn.textContent;
+    
+    // Disable button during submission
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      // Send email using EmailJS
+      const response = await emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', '#contactForm');
+      
+      // Show success message
+      formMessage.textContent = '✓ Message sent successfully! We\'ll get back to you soon.';
+      formMessage.classList.remove('error');
+      formMessage.classList.add('success');
+
+      // Reset form
+      document.getElementById('contactForm').reset();
+
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        formMessage.classList.remove('success');
+      }, 5000);
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+      
+      // Show error message
+      formMessage.textContent = '✗ Failed to send message. Please try again or email us directly.';
+      formMessage.classList.remove('success');
+      formMessage.classList.add('error');
+
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        formMessage.classList.remove('error');
+      }, 5000);
+    } finally {
+      // Re-enable button
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
   });
 </script>
 
