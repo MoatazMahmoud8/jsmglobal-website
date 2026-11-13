@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get ACE Aus Citizenship</title>
+<meta name="description" content="Download ACE Aus Citizenship for iPhone or Android.">
+
+<!-- ============================================================
+     ACE SMART LINK
+     One URL to share. Detects iPhone vs Android, sends the visitor
+     to the right store, and records every click in Google Analytics
+     (source, device, country, which store).
+
+     SETUP (3 things):
+       1. Replace G-XXXXXXXXXX below with your GA4 Measurement ID.
+       2. (Optional) Replace APPLE_PROVIDER_TOKEN with the "pt" value
+          from App Store Connect > App Analytics > Campaigns so Apple
+          reports downloads per campaign too.
+       3. Upload this file to any free host (Cloudflare Pages, Netlify,
+          GitHub Pages) and share that URL.
+
+     SHARING: add ?utm_source=... to the URL per channel, e.g.
+       https://yourlink.com/?utm_source=facebook
+       https://yourlink.com/?utm_source=whatsapp&utm_campaign=launch
+     ============================================================ -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<style>
+  :root{
+    --bg:#f6f8f4; --fg:#15201a; --muted:#5a6b61; --card:#ffffff;
+    --line:#d9e2dc; --accent:#0b6e4f; --accent-fg:#ffffff;
+    --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1512; --fg:#eef3ef; --muted:#9baba1; --card:#17201b;
+           --line:#263129; --accent:#2fb380; --accent-fg:#06110c; color-scheme:dark; }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);
+       display:flex;align-items:center;justify-content:center;
+       padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));
+       padding-right:max(16px,env(safe-area-inset-right,0px));}
+  .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);
+        border-radius:20px;padding:32px 28px;display:grid;gap:20px;text-align:center}
+  .logo{width:72px;height:72px;border-radius:18px;margin:0 auto;background:var(--accent);
+        color:var(--accent-fg);display:grid;place-items:center;font-weight:800;font-size:26px;letter-spacing:.5px}
+  h1{margin:0;font-size:1.5rem;line-height:1.2;text-wrap:balance}
+  p{margin:0;color:var(--muted);line-height:1.5;font-size:.95rem}
+  .stores{display:grid;gap:12px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;
+       padding:14px 18px;border-radius:12px;text-decoration:none;font-weight:600;
+       border:1px solid var(--line);color:var(--fg);background:transparent;font-size:1rem}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+  .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .btn svg{width:22px;height:22px;flex:none;fill:currentColor}
+  .note{font-size:.8rem}
+  .disclaimer{font-size:.75rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="logo" aria-hidden="true">ACE</div>
+  <h1>ACE Aus Citizenship</h1>
+  <p>519 exam-style questions, 25 mock exams, 100% offline. Built around <em>Our Common Bond</em>.</p>
+
+  <div class="stores">
+    <a id="ios" class="btn" href="#" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M16.37 12.6c.02 2.86 2.5 3.8 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.9 2.32-1.26.02-1.67-.75-3.12-.75s-1.9.73-3.1.77c-1.24.05-2.19-1.25-2.98-2.4-1.63-2.36-2.88-6.66-1.2-9.57a4.64 4.64 0 0 1 3.92-2.38c1.22-.02 2.37.82 3.12.82.74 0 2.14-1.02 3.6-.87.62.03 2.35.25 3.46 1.88-.09.06-2.07 1.21-2.03 3.66M13.98 4.9c.66-.8 1.1-1.9.98-3-.95.04-2.1.63-2.78 1.43-.61.7-1.15 1.84-1 2.92 1.06.08 2.14-.54 2.8-1.35"/></svg>
+      Download on the App Store
+    </a>
+    <a id="android" class="btn" href="#" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M3.6 2.3 13.9 12 3.6 21.7c-.37-.2-.6-.6-.6-1.1V3.4c0-.5.23-.9.6-1.1m11.3 10.7 3-2.8 3.6 2.1c.9.5.9 1.4 0 1.9l-3.6 2.1-3-2.8M5.2 2.1 15.5 11l2.4-2.3L6.4 2.1c-.4-.2-.8-.2-1.2 0m0 19.8c.4.2.8.2 1.2 0l11.5-6.6-2.4-2.3L5.2 21.9"/></svg>
+      Get it on Google Play
+    </a>
+  </div>
+
+  <p id="status" class="note" hidden></p>
+  <p class="disclaimer">Independent study tool by JSM Global Pty Ltd. Not affiliated with the Australian Government.</p>
+</main>
+
+<script>
+(function(){
+  // ---- Store links -------------------------------------------------
+  var APPLE_ID   = '6767216706';
+  var PLAY_ID    = 'xyz.jsmglobal.ace';
+  var APPLE_PT   = 'APPLE_PROVIDER_TOKEN'; // from App Store Connect > App Analytics > Campaigns (optional)
+
+  var q = new URLSearchParams(location.search);
+  var source   = q.get('utm_source')   || (document.referrer ? new URL(document.referrer).hostname : 'direct');
+  var campaign = q.get('utm_campaign') || 'smartlink';
+  var medium   = q.get('utm_medium')   || 'social';
+
+  // Apple campaign link (reports in App Store Connect when pt is set)
+  var iosUrl = 'https://apps.apple.com/au/app/ace-aus-citizenship/id' + APPLE_ID;
+  if (APPLE_PT !== 'APPLE_PROVIDER_TOKEN') {
+    iosUrl += '?pt=' + encodeURIComponent(APPLE_PT) + '&ct=' + encodeURIComponent(source) + '&mt=8';
+  }
+  // Google Play referrer (reports in Play Console > Acquisition)
+  var playUrl = 'https://play.google.com/store/apps/details?id=' + PLAY_ID +
+    '&referrer=' + encodeURIComponent('utm_source=' + source + '&utm_medium=' + medium + '&utm_campaign=' + campaign);
+
+  var ios = document.getElementById('ios');
+  var and = document.getElementById('android');
+  ios.href = iosUrl;
+  and.href = playUrl;
+
+  // ---- Device detection --------------------------------------------
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/i.test(ua);
+  var platform = isIOS ? 'ios' : isAndroid ? 'android' : 'desktop';
+
+  if (isIOS) ios.classList.add('primary');
+  if (isAndroid) and.classList.add('primary');
+
+  // ---- Tracking ----------------------------------------------------
+  function track(name, store){
+    try { gtag('event', name, { store: store, platform: platform, source: source, campaign: campaign }); } catch(e){}
+  }
+  track('smartlink_view', platform);
+
+  ios.addEventListener('click', function(){ track('store_click', 'apple'); });
+  and.addEventListener('click', function(){ track('store_click', 'google'); });
+
+  // ---- Auto-redirect on phones (1.2s so the view is recorded) -----
+  var status = document.getElementById('status');
+  if (isIOS || isAndroid) {
+    var target = isIOS ? iosUrl : playUrl;
+    var storeName = isIOS ? 'the App Store' : 'Google Play';
+    status.textContent = 'Taking you to ' + storeName + '…';
+    status.hidden = false;
+    track('store_click', isIOS ? 'apple' : 'google');
+    setTimeout(function(){ location.href = target; }, 1200);
+  }
+})();
+</script>
+</body>
+</html>
