@@ -5,32 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Get ACE Aus Citizenship</title>
 <meta name="description" content="Download ACE Aus Citizenship for iPhone or Android.">
+<meta property="og:title" content="ACE Aus Citizenship — Australian Citizenship Test Prep">
+<meta property="og:description" content="519 exam-style questions, 25 mock exams, 100% offline. Tap to get it on iPhone or Android.">
+<meta property="og:url" content="https://jsmglobal.xyz/get/">
+<meta property="og:type" content="website">
 
 <!-- ============================================================
-     ACE SMART LINK
-     One URL to share. Detects iPhone vs Android, sends the visitor
-     to the right store, and records every click in Google Analytics
-     (source, device, country, which store).
+     ACE SMART LINK  —  https://jsmglobal.xyz/get/
 
-     SETUP (3 things):
-       1. Replace G-XXXXXXXXXX below with your GA4 Measurement ID.
-       2. (Optional) Replace APPLE_PROVIDER_TOKEN with the "pt" value
-          from App Store Connect > App Analytics > Campaigns so Apple
-          reports downloads per campaign too.
-       3. Upload this file to any free host (Cloudflare Pages, Netlify,
-          GitHub Pages) and share that URL.
+     Phones: records the click, then goes straight to the right store.
+     Desktop: shows both store buttons + a QR code to scan.
 
-     SHARING: add ?utm_source=... to the URL per channel, e.g.
-       https://yourlink.com/?utm_source=facebook
-       https://yourlink.com/?utm_source=whatsapp&utm_campaign=launch
+     IDS TO FILL IN (search for each placeholder):
+       GA_MEASUREMENT_ID   -> Google Analytics 4 "G-XXXXXXXXXX"
+       META_PIXEL_ID       -> Facebook/Meta Pixel numeric id (optional)
+       APPLE_PROVIDER_TOKEN-> App Store Connect > App Analytics >
+                              Campaigns "pt" value (optional)
+
+     SHARING: always add a source tag per channel, e.g.
+       https://jsmglobal.xyz/get/?utm_source=facebook
+       https://jsmglobal.xyz/get/?utm_source=facebook&utm_content=groupname
+       https://jsmglobal.xyz/get/?utm_source=whatsapp
      ============================================================ -->
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  // ---- IDs ----------------------------------------------------------
+  var GA_ID    = 'GA_MEASUREMENT_ID';
+  var PIXEL_ID = 'META_PIXEL_ID';
+  var APPLE_PT = 'APPLE_PROVIDER_TOKEN';
+</script>
+
+<!-- Google Analytics 4 -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  if (GA_ID !== 'GA_MEASUREMENT_ID') {
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', GA_ID, { transport_type: 'beacon' });
+  }
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  if (PIXEL_ID !== 'META_PIXEL_ID') {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', PIXEL_ID);
+    fbq('track', 'PageView');
+  }
 </script>
 
 <style>
@@ -49,7 +77,7 @@
        display:flex;align-items:center;justify-content:center;
        padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));
        padding-right:max(16px,env(safe-area-inset-right,0px));}
-  .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);
+  .card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);
         border-radius:20px;padding:32px 28px;display:grid;gap:20px;text-align:center}
   .logo{width:72px;height:72px;border-radius:18px;margin:0 auto;background:var(--accent);
         color:var(--accent-fg);display:grid;place-items:center;font-weight:800;font-size:26px;letter-spacing:.5px}
@@ -62,8 +90,13 @@
   .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
   .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .btn svg{width:22px;height:22px;flex:none;fill:currentColor}
-  .note{font-size:.8rem}
+  .qr{display:grid;gap:10px;justify-items:center;padding-top:8px;border-top:1px solid var(--line)}
+  .qr canvas{width:160px;height:160px;border-radius:8px;background:#fff;padding:8px}
+  .qr p{font-size:.85rem}
+  .note{font-size:.85rem}
   .disclaimer{font-size:.75rem;color:var(--muted)}
+  /* Phone: keep the first paint minimal while we redirect */
+  body.redirecting .stores, body.redirecting .qr, body.redirecting .disclaimer, body.redirecting p.blurb{display:none}
 </style>
 </head>
 <body>
@@ -71,7 +104,8 @@
 <main class="card">
   <div class="logo" aria-hidden="true">ACE</div>
   <h1>ACE Aus Citizenship</h1>
-  <p>519 exam-style questions, 25 mock exams, 100% offline. Built around <em>Our Common Bond</em>.</p>
+  <p class="blurb">519 exam-style questions, 25 mock exams, 100% offline. Built around <em>Our Common Bond</em>.</p>
+  <p id="status" class="note" hidden></p>
 
   <div class="stores">
     <a id="ios" class="btn" href="#" rel="noopener">
@@ -84,30 +118,35 @@
     </a>
   </div>
 
-  <p id="status" class="note" hidden></p>
+  <div class="qr" id="qr" hidden>
+    <canvas id="qrcanvas" width="256" height="256" aria-label="QR code linking to this page"></canvas>
+    <p>Scan with your phone to open the right store.</p>
+  </div>
+
   <p class="disclaimer">Independent study tool by JSM Global Pty Ltd. Not affiliated with the Australian Government.</p>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <script>
 (function(){
   // ---- Store links -------------------------------------------------
-  var APPLE_ID   = '6767216706';
-  var PLAY_ID    = 'xyz.jsmglobal.ace';
-  var APPLE_PT   = 'APPLE_PROVIDER_TOKEN'; // from App Store Connect > App Analytics > Campaigns (optional)
+  var APPLE_ID = '6767216706';
+  var PLAY_ID  = 'xyz.jsmglobal.ace';
 
   var q = new URLSearchParams(location.search);
-  var source   = q.get('utm_source')   || (document.referrer ? new URL(document.referrer).hostname : 'direct');
-  var campaign = q.get('utm_campaign') || 'smartlink';
+  var refHost = '';
+  try { refHost = document.referrer ? new URL(document.referrer).hostname : ''; } catch(e){}
+  var source   = q.get('utm_source')   || refHost || 'direct';
   var medium   = q.get('utm_medium')   || 'social';
+  var campaign = q.get('utm_campaign') || 'smartlink';
+  var content  = q.get('utm_content')  || '';
 
-  // Apple campaign link (reports in App Store Connect when pt is set)
   var iosUrl = 'https://apps.apple.com/au/app/ace-aus-citizenship/id' + APPLE_ID;
   if (APPLE_PT !== 'APPLE_PROVIDER_TOKEN') {
-    iosUrl += '?pt=' + encodeURIComponent(APPLE_PT) + '&ct=' + encodeURIComponent(source) + '&mt=8';
+    iosUrl += '?pt=' + encodeURIComponent(APPLE_PT) + '&ct=' + encodeURIComponent(source + (content ? '-' + content : '')) + '&mt=8';
   }
-  // Google Play referrer (reports in Play Console > Acquisition)
-  var playUrl = 'https://play.google.com/store/apps/details?id=' + PLAY_ID +
-    '&referrer=' + encodeURIComponent('utm_source=' + source + '&utm_medium=' + medium + '&utm_campaign=' + campaign);
+  var playRef = 'utm_source=' + source + '&utm_medium=' + medium + '&utm_campaign=' + campaign + (content ? '&utm_content=' + content : '');
+  var playUrl = 'https://play.google.com/store/apps/details?id=' + PLAY_ID + '&referrer=' + encodeURIComponent(playRef);
 
   var ios = document.getElementById('ios');
   var and = document.getElementById('android');
@@ -119,29 +158,49 @@
   var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var isAndroid = /Android/i.test(ua);
   var platform = isIOS ? 'ios' : isAndroid ? 'android' : 'desktop';
-
   if (isIOS) ios.classList.add('primary');
   if (isAndroid) and.classList.add('primary');
 
   // ---- Tracking ----------------------------------------------------
+  var params = { store: '', platform: platform, source: source, medium: medium, campaign: campaign, content: content };
   function track(name, store){
-    try { gtag('event', name, { store: store, platform: platform, source: source, campaign: campaign }); } catch(e){}
+    params.store = store;
+    try { if (GA_ID !== 'GA_MEASUREMENT_ID') gtag('event', name, params); } catch(e){}
+    try { if (PIXEL_ID !== 'META_PIXEL_ID' && window.fbq) fbq('trackCustom', name, params); } catch(e){}
   }
   track('smartlink_view', platform);
-
   ios.addEventListener('click', function(){ track('store_click', 'apple'); });
   and.addEventListener('click', function(){ track('store_click', 'google'); });
 
-  // ---- Auto-redirect on phones (1.2s so the view is recorded) -----
+  // ---- Phones: beacon the click, then go straight to the store -----
   var status = document.getElementById('status');
   if (isIOS || isAndroid) {
+    document.body.classList.add('redirecting');
     var target = isIOS ? iosUrl : playUrl;
-    var storeName = isIOS ? 'the App Store' : 'Google Play';
-    status.textContent = 'Taking you to ' + storeName + '…';
+    status.textContent = 'Opening ' + (isIOS ? 'the App Store' : 'Google Play') + '…';
     status.hidden = false;
     track('store_click', isIOS ? 'apple' : 'google');
-    setTimeout(function(){ location.href = target; }, 1200);
+    // 350ms is enough for the beacon transport to send the hit.
+    setTimeout(function(){ location.replace(target); }, 350);
+    // Fallback if the store didn't open (e.g. blocked in an in-app browser)
+    setTimeout(function(){ document.body.classList.remove('redirecting'); status.textContent = 'Didn’t open? Tap a button below.'; }, 3000);
+    return;
   }
+
+  // ---- Desktop: show a QR code pointing at this same tagged link ----
+  var qr = document.getElementById('qr');
+  function drawQR(){
+    if (!window.QRCode) return;
+    var holder = document.createElement('div');
+    var qrUrl = 'https://jsmglobal.xyz/get/' + (location.search || '');
+    new QRCode(holder, { text: qrUrl, width: 256, height: 256, correctLevel: QRCode.CorrectLevel.M });
+    var img = holder.querySelector('canvas') || holder.querySelector('img');
+    var canvas = document.getElementById('qrcanvas');
+    var ctx = canvas.getContext('2d');
+    function paint(){ ctx.fillStyle = '#fff'; ctx.fillRect(0,0,256,256); ctx.drawImage(img,0,0,256,256); qr.hidden = false; }
+    if (img.tagName === 'IMG' && !img.complete) img.onload = paint; else paint();
+  }
+  if (window.QRCode) drawQR(); else window.addEventListener('load', drawQR);
 })();
 </script>
 </body>
